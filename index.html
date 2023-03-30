@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>One-to-One Function Checker</title>
+    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+    <script>
+      function checkFunction() {
+        // Get the input function
+        var inputFunction = document.getElementById("functionInput").value;
+        var outputElement = document.getElementById("output");
+        
+        // Check if the function is one-to-one
+        try {
+          var x = 0;
+          var y1 = eval(inputFunction);
+          var y2 = eval(inputFunction.replace(/x/g, "x + 0.0001"));
+          if (y1 !== y2) {
+            outputElement.innerHTML = "The function is one-to-one";
+          } else {
+            outputElement.innerHTML = "The function is not one-to-one";
+          }
+          // Plot the function
+          var data = [
+            {
+              x: Array.from({ length: 100 }, (_, i) => i / 10 - 5),
+              y: Array.from({ length: 100 }, (_, i) => eval(inputFunction.replace(/x/g, i / 10 - 5))),
+              type: 'scatter'
+            }
+          ];
+          Plotly.newPlot('plot', data);
+        } catch (error) {
+          outputElement.innerHTML = "Invalid function";
+        }
+      }
+    </script>
+  </head>
+  <body>
+    <h1>One-to-One Function Checker</h1>
+    <p>Enter a function below:</p>
+    <input type="text" id="functionInput">
+    <button onclick="checkFunction()">Check function</button>
+    <p id="output"></p>
+    <div id="plot"></div>
+  </body>
+</html>
